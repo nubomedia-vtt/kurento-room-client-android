@@ -25,7 +25,7 @@ compile 'fi.vtt.nubomedia:webrtcpeer-android:1.0.0'
 
 Android application code
 ------------------------
-
+```
 import fi.vtt.nubomedia.kurentoroomclientandroid.KurentoRoomAPI;
 import fi.vtt.nubomedia.kurentoroomclientandroid.RoomError;
 import fi.vtt.nubomedia.kurentoroomclientandroid.RoomListener;
@@ -44,8 +44,9 @@ roomApi.connectWebSocket();
 roomApi.sendJoinRoom("My Name", "My Room", requestIndex++);
 roomApi.sendMessage("My Room", "My Name", "My message.", requestIndex++);
 roomApi.disconnectWebSocket();
+```
 
-
+```
 class MyRoomListener implements RoomListener(){
      @Override
     public void onRoomResponse(RoomResponse response) {
@@ -69,12 +70,9 @@ class MyRoomListener implements RoomListener(){
         .equals(RoomListener.METHOD_SEND_MESSAGE)) {
         // TODO
       } else ...
-        
     }
-
-
 }
-
+```
 
 Licensing
 ---------
@@ -83,3 +81,4 @@ Licensing
 Support
 -------
 Support is provided through the [NUBOMEDIA VTT Public Mailing List](https://groups.google.com/forum/#!forum/nubomedia-vtt).
+
