@@ -4,26 +4,18 @@ import android.util.Log;
 
 import net.minidev.json.JSONObject;
 
-import org.java_websocket.handshake.ServerHandshake;
-
-import java.net.URI;
 import java.util.HashMap;
 
 import fi.vtt.nubomedia.jsonrpcwsandroid.JsonRpcNotification;
-import fi.vtt.nubomedia.jsonrpcwsandroid.JsonRpcRequest;
 import fi.vtt.nubomedia.jsonrpcwsandroid.JsonRpcResponse;
-import fi.vtt.nubomedia.jsonrpcwsandroid.JsonRpcWebSocketClient;
 import fi.vtt.nubomedia.utilitiesandroid.LooperExecutor;
 
 /**
  * Class that handles all Room API calls and passes asynchronous
  * responses and notifications to a RoomListener interface.
  */
-public class KurentoRoomAPI implements JsonRpcWebSocketClient.WebSocketConnectionEvents  {
+public class KurentoRoomAPI extends KurentoAPI {
     private static final String LOG_TAG = "KurentoRoomAPI";
-    private JsonRpcWebSocketClient client = null;
-    private LooperExecutor executor = null;
-    private String wsUri = null;
     private RoomListener roomListener = null;
 
     /**
@@ -32,9 +24,9 @@ public class KurentoRoomAPI implements JsonRpcWebSocketClient.WebSocketConnectio
      * for opening, closing and checking if the connection is open through the corresponding
      * API calls.
      *
-     * @param executor
-     * @param uri
-     * @param listener
+     * @param executor is the asynchronous UI-safe executor for tasks.
+     * @param uri is the web socket link to the room web services.
+     * @param listener interface handles the callbacks for responses, notifications and errors.
      */
     public KurentoRoomAPI(LooperExecutor executor, String uri, RoomListener listener){
         super();
@@ -43,60 +35,6 @@ public class KurentoRoomAPI implements JsonRpcWebSocketClient.WebSocketConnectio
         this.roomListener = listener;
     }
 
-    /**
-     * Opens a web socket connection to the predefined URI as provided in the constructor.
-     * The method responds immediately, whether or not the connection is opened.
-     * The method isWebSocketConnected() should be called to ensure that the connection is open.
-     */
-    public void connectWebSocket() {
-        try {
-            if(isWebSocketConnected()){
-                return;
-            }
-            URI uri = new URI(wsUri);
-            client = new JsonRpcWebSocketClient(uri, this,executor);
-            executor.execute(new Runnable() {
-                public void run() {
-                    client.connect();
-                }
-            });
-
-        } catch (Exception exc){
-            Log.e(LOG_TAG, "connectWebSocket", exc);
-        }
-    }
-
-    /**
-     * Method to check if the web socket connection is connected.
-     *
-     * @return true if the connection state is connected, and false otherwise.
-     */
-    public boolean isWebSocketConnected(){
-        if(client!=null){
-            return (client.getConnectionState().equals(JsonRpcWebSocketClient.WebSocketConnectionState.CONNECTED));
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Attempts to close the web socket connection asynchronously.
-     */
-    public void disconnectWebSocket() {
-        try {
-            if(client!= null ) {
-                executor.execute(new Runnable() {
-                    public void run() {
-                        client.disconnect(false);
-                    }
-                });
-            }
-        } catch (Exception exc){
-            Log.e(LOG_TAG, "disconnectWebSocket", exc);
-        } finally {
-            ;
-        }
-    }
 
     /**
      * Method for the user to join the room. If the room does not exist previously,
@@ -234,49 +172,7 @@ public class KurentoRoomAPI implements JsonRpcWebSocketClient.WebSocketConnectio
 
     }
 
-    /**
-     *
-     * @param method
-     * @param namedParameters
-     * @param id
-     */
-    private void send(String method, HashMap<String, Object> namedParameters, int id){
-
-        try {
-            final JsonRpcRequest request = new JsonRpcRequest();
-            request.setMethod(method);
-            if(namedParameters!=null) {
-                request.setNamedParams(namedParameters);
-            }
-            if(id>=0) {
-                request.setId(new Integer(id));
-            }
-            executor.execute(new Runnable() {
-                public void run() {
-                    if(isWebSocketConnected()) {
-                        client.sendRequest(request);
-                    }
-                }
-            });
-        } catch (Exception exc){
-            Log.e(LOG_TAG, "send: "+method, exc);
-        }
-    }
-
-
-
     /* WEB SOCKET CONNECTION EVENTS */
-
-    @Override
-    public void onOpen(ServerHandshake handshakedata) {
-        Log.d(LOG_TAG, "onOpen: "+handshakedata.getHttpStatusMessage());
-    }
-
-    @Override
-    public void onRequest(JsonRpcRequest request) {
-        Log.d(LOG_TAG, "onRequest: "+request.toString());
-    }
-
 
     /**
      * Callback method that relays the RoomResponse or RoomError to the RoomListener interface.
@@ -300,11 +196,6 @@ public class KurentoRoomAPI implements JsonRpcWebSocketClient.WebSocketConnectio
     public void onNotification(JsonRpcNotification notification) {
         RoomNotification roomNotification = new RoomNotification(notification);
         roomListener.onRoomNotification(roomNotification);
-    }
-
-    @Override
-    public void onClose(int code, String reason, boolean remote) {
-        Log.d(LOG_TAG, "onClose: "+reason+";"+code+";"+remote);
     }
 
     @Override
