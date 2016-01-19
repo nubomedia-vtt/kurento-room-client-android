@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # kurento-room-client-android documentation build configuration file, created by
-# sphinx-quickstart on Mon Jan 18 13:21:22 2016.
+# sphinx-quickstart on Mon Jan 18 16:06:05 2016.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
