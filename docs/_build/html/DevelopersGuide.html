@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Readme &mdash; kurento-room-client-android 1.0.4 documentation</title>
+  <title>Developers Guide &mdash; kurento-room-client-android 1.0.4 documentation</title>
   
 
   
@@ -31,8 +31,8 @@
 
   
     <link rel="top" title="kurento-room-client-android 1.0.4 documentation" href="index.html"/>
-        <link rel="next" title="Developers Guide" href="DevelopersGuide.html"/>
-        <link rel="prev" title="Welcome to Nubomedia-VTT kurento-room-client-android’s documentation!" href="index.html"/> 
+        <link rel="next" title="Installation Guide" href="InstallationGuide.html"/>
+        <link rel="prev" title="Readme" href="README.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -82,11 +82,8 @@
             
             
                 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="">Readme</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#kurento-room-client-android">kurento-room-client-android</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="DevelopersGuide.html">Developers Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">Readme</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Developers Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="InstallationGuide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="License.html">License</a></li>
 </ul>
@@ -119,11 +116,11 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>Readme</li>
+    <li>Developers Guide</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/README.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/DevelopersGuide.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -133,14 +130,65 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="readme">
-<span id="id1"></span><h1>Readme<a class="headerlink" href="#readme" title="Permalink to this headline">¶</a></h1>
-<p>This project is part of NUBOMEDIA
-<a class="reference external" href="http://www.nubomedia.eu">www.nubomedia.eu</a></p>
-<div class="section" id="kurento-room-client-android">
-<h2>kurento-room-client-android<a class="headerlink" href="#kurento-room-client-android" title="Permalink to this headline">¶</a></h2>
-<p>The repository contains documentation for installing and utilising the kurento Room and Tree client for Android. The repository contains description of the architecture of the kurento-room-client-android and also the source code of the kurento-room-client-android implementation.</p>
+  <div class="section" id="developers-guide">
+<h1>Developers Guide<a class="headerlink" href="#developers-guide" title="Permalink to this headline">¶</a></h1>
+<p>This documents provides information how to utilize the kurento-room-client-android library for your project.</p>
+<p>Setup the developing environment by importing the project to Android Studio.
+You can import this project to your own Android Studio project via Maven (jCenter or Maven Central) by adding the following line to module&#8217;s build.gradle file:</p>
+<div class="code java highlight-python"><div class="highlight"><pre>compile &#39;fi.vtt.nubomedia:kurento-room-client-android:1.0.4&#39;
+</pre></div>
 </div>
+<p>Android application code</p>
+<div class="code java highlight-python"><div class="highlight"><pre>import fi.vtt.nubomedia.kurentoroomclientandroid.KurentoRoomAPI;
+import fi.vtt.nubomedia.kurentoroomclientandroid.RoomError;
+import fi.vtt.nubomedia.kurentoroomclientandroid.RoomListener;
+import fi.vtt.nubomedia.kurentoroomclientandroid.RoomNotification;
+import fi.vtt.nubomedia.kurentoroomclientandroid.RoomResponse;
+import fi.vtt.nubomedia.utilitiesandroid.LooperExecutor;
+
+String wsRoomUri = &quot;ws://YOUR_IP_ADDRESS:8080/room&quot;;
+LooperExecutor executor = new LooperExecutor();
+executor.requestStart();
+RoomListener myRoomListener = ...
+public int requestIndex = 0;
+
+KurentoRoomAPI roomApi = new KurentoRoomAPI(executor, wsUri, myRoomListener);
+roomApi.connectWebSocket();
+roomApi.sendJoinRoom(&quot;My Name&quot;, &quot;My Room&quot;, requestIndex++);
+roomApi.sendMessage(&quot;My Room&quot;, &quot;My Name&quot;, &quot;My message.&quot;, requestIndex++);
+roomApi.disconnectWebSocket();
+
+class MyRoomListener implements RoomListener(){
+ @Override
+ public void onRoomResponse(RoomResponse response) {
+  String responseId = response.getId();
+  String sessionId = response.getSessionId();
+  HashMap&lt;String&gt;&lt;String&gt; values = response.getValues();
+ }
+
+@Override
+public void onRoomError(RoomError error) {
+ String errorCode = error.getCode();
+ String errorData = error.getData();
+}
+
+@Override
+public void onRoomNotification(RoomNotification notification) {
+  if(notification.getMethod()
+    .equals(RoomListener.METHOD_PARTICIPANT_JOINED) {
+    // TODO
+  } else if(notification.getMethod()
+    .equals(RoomListener.METHOD_SEND_MESSAGE)) {
+    // TODO
+  } else ...
+ }
+}
+</pre></div>
+</div>
+<p>Source code is available at
+<a class="reference external" href="https://github.com/nubomedia-vtt/kurento-room-client-android">https://github.com/nubomedia-vtt/kurento-room-client-android</a></p>
+<p>Support is provided through the Nubomedia VTT Public Mailing List available at
+<a class="reference external" href="https://groups.google.com/forum/#!forum/nubomedia-vtt">https://groups.google.com/forum/#!forum/nubomedia-vtt</a></p>
 </div>
 
 
@@ -150,10 +198,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="DevelopersGuide.html" class="btn btn-neutral float-right" title="Developers Guide" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="InstallationGuide.html" class="btn btn-neutral float-right" title="Installation Guide" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral" title="Welcome to Nubomedia-VTT kurento-room-client-android’s documentation!" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="README.html" class="btn btn-neutral" title="Readme" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

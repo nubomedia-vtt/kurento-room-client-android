@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Welcome to Nubomedia-VTT kurento-room-client-android’s documentation! &mdash; kurento-room-client-android 1.0.4 documentation</title>
+  <title>Installation Guide &mdash; kurento-room-client-android 1.0.4 documentation</title>
   
 
   
@@ -30,8 +30,9 @@
   
 
   
-    <link rel="top" title="kurento-room-client-android 1.0.4 documentation" href="#"/>
-        <link rel="next" title="Readme" href="README.html"/> 
+    <link rel="top" title="kurento-room-client-android 1.0.4 documentation" href="index.html"/>
+        <link rel="next" title="License" href="License.html"/>
+        <link rel="prev" title="Developers Guide" href="DevelopersGuide.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -49,7 +50,7 @@
           
 
           
-            <a href="#" class="icon icon-home"> kurento-room-client-android
+            <a href="index.html" class="icon icon-home"> kurento-room-client-android
           
 
           
@@ -80,10 +81,13 @@
           
             
             
-                <ul>
+                <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="README.html">Readme</a></li>
 <li class="toctree-l1"><a class="reference internal" href="DevelopersGuide.html">Developers Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="InstallationGuide.html">Installation Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Installation Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#clone-repository">Clone repository:</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="License.html">License</a></li>
 </ul>
 
@@ -98,7 +102,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="#">kurento-room-client-android</a>
+        <a href="index.html">kurento-room-client-android</a>
       </nav>
 
 
@@ -113,13 +117,13 @@
 
 <div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href="#">Docs</a> &raquo;</li>
+    <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>Welcome to Nubomedia-VTT kurento-room-client-android&#8217;s documentation!</li>
+    <li>Installation Guide</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/index.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/InstallationGuide.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -129,22 +133,24 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="welcome-to-nubomedia-vtt-kurento-room-client-android-s-documentation">
-<h1>Welcome to Nubomedia-VTT kurento-room-client-android&#8217;s documentation!<a class="headerlink" href="#welcome-to-nubomedia-vtt-kurento-room-client-android-s-documentation" title="Permalink to this headline">¶</a></h1>
-<p>Contents:</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="README.html">Readme</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="README.html#kurento-room-client-android">kurento-room-client-android</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="DevelopersGuide.html">Developers Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="InstallationGuide.html">Installation Guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="InstallationGuide.html#clone-repository">Clone repository:</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="License.html">License</a></li>
-</ul>
+  <div class="section" id="installation-guide">
+<h1>Installation Guide<a class="headerlink" href="#installation-guide" title="Permalink to this headline">¶</a></h1>
+<p>This documents provides information how to compile the kurento-room-client-android library from the sources for your project.</p>
+<div class="section" id="clone-repository">
+<h2>Clone repository:<a class="headerlink" href="#clone-repository" title="Permalink to this headline">¶</a></h2>
+<div class="code bash highlight-python"><div class="highlight"><pre>sudo apt-get install git
+git clone https://github.com/nubomedia-vtt/kurento-room-client-android.git
+</pre></div>
+</div>
+<p>Setup the developing environment by importing the project to Android Studio.
+Import the third-party libraries via Maven by adding the following lines to the module&#8217;s build.gradle file</p>
+<div class="code java highlight-python"><div class="highlight"><pre>compile &#39;fi.vtt.nubomedia:utilities-android:1.0.0&#39;
+compile &#39;fi.vtt.nubomedia:jsonrpc-ws-android:1.0.4&#39;
+compile &#39;fi.vtt.nubomedia:webrtcpeer-android:1.0.0&#39;
+</pre></div>
+</div>
+<p>Support is provided through the Nubomedia VTT Public Mailing List available at
+<a class="reference external" href="https://groups.google.com/forum/#!forum/nubomedia-vtt">https://groups.google.com/forum/#!forum/nubomedia-vtt</a></p>
 </div>
 </div>
 
@@ -155,8 +161,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="README.html" class="btn btn-neutral float-right" title="Readme" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="License.html" class="btn btn-neutral float-right" title="License" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
+      
+        <a href="DevelopersGuide.html" class="btn btn-neutral" title="Developers Guide" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
