@@ -25,17 +25,34 @@ Android application code
     import fi.vtt.nubomedia.kurentoroomclientandroid.RoomResponse;
     import fi.vtt.nubomedia.utilitiesandroid.LooperExecutor;
     
+    import fi.vtt.nubomedia.kurentoroomclientandroid.KurentoTreeAPI;
+    import fi.vtt.nubomedia.kurentoroomclientandroid.TreeError;
+    import fi.vtt.nubomedia.kurentoroomclientandroid.TreeListener;
+    import fi.vtt.nubomedia.kurentoroomclientandroid.TreeNotification;
+    import fi.vtt.nubomedia.kurentoroomclientandroid.TreeResponse;
+    
     String wsRoomUri = "ws://YOUR_IP_ADDRESS:8080/room";
+    String wsTreeUri = "http://YOUR_IP_ADDRESS:8080/kurento-tree
     LooperExecutor executor = new LooperExecutor();
     executor.requestStart();
     RoomListener myRoomListener = ...
+    TreeListener myTreeListener = ...
     public int requestIndex = 0;
     
-    KurentoRoomAPI roomApi = new KurentoRoomAPI(executor, wsUri, myRoomListener);
+    KurentoRoomAPI roomApi = new KurentoRoomAPI(executor, wsRoomUri, myRoomListener);
     roomApi.connectWebSocket();
-    roomApi.sendJoinRoom("My Name", "My Room", requestIndex++);
-    roomApi.sendMessage("My Room", "My Name", "My message.", requestIndex++);
-    roomApi.disconnectWebSocket();
+    if(roomApi.isWebSocketConnected()){
+     roomApi.sendJoinRoom("My Name", "My Room", requestIndex++);
+     roomApi.sendMessage("My Room", "My Name", "My message.", requestIndex++);
+     roomApi.disconnectWebSocket();
+    }
+    
+    KurentoTreeAPI treeApi = new KurentoTreeAPI(executor, wsTreeUri, myTreeListener);
+    treeApi.connectWebSocket();
+    if(treeApi.isWebSocketConnected()){
+     treeApi.sendCreateTree("My Tree", requestIndex++);
+     treeApi.disconnectWebSocket();
+    }
     
     class MyRoomListener implements RoomListener(){
      @Override
@@ -62,10 +79,36 @@ Android application code
       } else ...
      }
     }
+    
+    class MyTreeListener implements TreeListener(){
+     @Override
+     public void onTreeResponse(TreeResponse response) {
+      String responseId = response.getId();
+      String sessionId = response.getSessionId();
+      HashMap<String><String> values = response.getValues();
+    }
+    
+    @Override
+    public void onTreeError(TreeError error) {
+     String errorCode = error.getCode();
+     String errorData = error.getData();
+    }
+    
+    @Override
+    public void onTreeNotification(TreeNotification notification) {
+      if(notification.getMethod()
+        .equals(TreeListener.METHOD_ICE_CANDIDATE) {
+        // TODO
+      } else ...
+     }
+    }
 
 
 Source code is available at
-https://github.com/nubomedia-vtt/kurento-room-client-android 
+https://github.com/nubomedia-vtt/kurento-room-client-android
+
+The Javadoc is included in the source code and can be downloaded from the link below:
+https://github.com/nubomedia-vtt/kurento-room-client-android/tree/master/javadoc 
 
 Support is provided through the Nubomedia VTT Public Mailing List available at
 https://groups.google.com/forum/#!forum/nubomedia-vtt
