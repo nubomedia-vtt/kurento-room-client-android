@@ -9,10 +9,12 @@ The source code is available at [https://github.com/nubomedia-vtt/kurento-room-c
 
 Repository structure
 --------------------
-This repository consists of an Android Studio library project.
+This repository consists of an Android Studio library project with gradle build scripts. 
 
 Usage
 --------
+THe more detailed Developers Guide and Installation Guide are available at [http://kurento-room-client-android.readthedocs.org/en/latest/](http://kurento-room-client-android.readthedocs.org/en/latest/)
+
 You can import this project to your own Android Studio project via Maven (jCenter or Maven Central) by adding the following line to module's `build.gradle` file:
 ```
 compile 'fi.vtt.nubomedia:kurento-room-client-android:1.0.4'
@@ -123,7 +125,7 @@ class MyTreeListener implements TreeListener(){
 
 Licensing
 ---------
-BSD
+[BSD](https://github.com/nubomedia-vtt/kurento-room-client-android/blob/master/LICENSE)
 
 Support
 -------
