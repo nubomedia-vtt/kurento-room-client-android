@@ -11,7 +11,7 @@ You can import this project to your own Android Studio project via Maven (jCente
 
 .. code:: java
 
-    compile 'fi.vtt.nubomedia:kurento-room-client-android:1.0.4'
+    compile 'fi.vtt.nubomedia:kurento-room-client-android:1.0.6'
 
 
 Android application code
