@@ -1,6 +1,6 @@
 kurento-room-android
 =================
-This repository contains Kurento Room and Tree APIs for Android.
+This repository contains Kurento Room API for Android.
 
 This project is part of [NUBOMEDIA](http://www.nubomedia.eu).
 
@@ -38,17 +38,11 @@ import fi.vtt.nubomedia.kurentoroomclientandroid.RoomNotification;
 import fi.vtt.nubomedia.kurentoroomclientandroid.RoomResponse;
 import fi.vtt.nubomedia.utilitiesandroid.LooperExecutor;
 
-import fi.vtt.nubomedia.kurentoroomclientandroid.TreeError;
-import fi.vtt.nubomedia.kurentoroomclientandroid.TreeListener;
-import fi.vtt.nubomedia.kurentoroomclientandroid.TreeNotification;
-import fi.vtt.nubomedia.kurentoroomclientandroid.TreeResponse;
-
 String wsRoomUri = "ws://YOUR_IP_ADDRESS:8080/room";
-String wsTreeUri = "http://YOUR_IP_ADDRESS:8080/kurento-tree
+
 LooperExecutor executor = new LooperExecutor();
 executor.requestStart();
 RoomListener myRoomListener = ...
-TreeListener myTreeListener = ...
 public int requestIndex = 0;
 
 KurentoRoomAPI roomApi = new KurentoRoomAPI(executor, wsRoomUri, myRoomListener);
@@ -59,12 +53,6 @@ if(roomApi.isWebSocketConnected()){
  roomApi.disconnectWebSocket();
 }
 
-KurentoTreeAPI treeApi = new KurentoTreeAPI(executor, wsTreeUri, myTreeListener);
-treeApi.connectWebSocket();
-if(treeApi.isWebSocketConnected()){
- treeApi.sendCreateTree("My Tree", requestIndex++);
- treeApi.disconnectWebSocket();
-}
 
 ```
 
@@ -95,32 +83,6 @@ class MyRoomListener implements RoomListener(){
     }
 }
 ```
-
-```
-class MyTreeListener implements TreeListener(){
-     @Override
-    public void onTreeResponse(TreeResponse response) {
-         String responseId = response.getId();
-         String sessionId = response.getSessionId();
-         HashMap<String><String> values = response.getValues();
-    }
-
-    @Override
-    public void onTreeError(TreeError error) {
-        String errorCode = error.getCode();
-        String errorData = error.getData();
-    }
-
-    @Override
-    public void onTreeNotification(TreeNotification notification) {
-      if(notification.getMethod()
-        .equals(TreeListener.METHOD_ICE_CANDIDATE) {
-        // TODO
-      } else ...
-    }
-}
-```
-
 
 
 Licensing
