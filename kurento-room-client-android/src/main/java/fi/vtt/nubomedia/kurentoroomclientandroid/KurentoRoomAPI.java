@@ -127,13 +127,13 @@ public class KurentoRoomAPI extends KurentoAPI {
      * @param sdpMLineIndex is the index (starting at 0) of the m-line in the SDP,
      *                      this candidate is associated with.
      */
-    public void sendOnIceCandidate(String endpointName, String candidate, String sdpMid, String sdpMLineIndex){
+    public void sendOnIceCandidate(String endpointName, String candidate, String sdpMid, String sdpMLineIndex, int id){
         HashMap<String, Object> namedParameters = new HashMap<String, Object>();
-        namedParameters.put("endPointName", endpointName);
+        namedParameters.put("endpointName", endpointName);
         namedParameters.put("candidate", candidate);
         namedParameters.put("sdpMid", sdpMid);
         namedParameters.put("sdpMLineIndex", sdpMLineIndex);
-        send("receiveVideoFrom", namedParameters, -1);
+        send("onIceCandidate", namedParameters, id);
     }
 
     /**
