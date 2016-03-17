@@ -6,6 +6,10 @@ This project is part of [NUBOMEDIA](http://www.nubomedia.eu).
 
 The source code is available at [https://github.com/nubomedia-vtt/kurento-room-client-android](https://github.com/nubomedia-vtt/kurento-room-client-android).
 
+Documentation
+--------------------
+
+Documentation available at: http://kurento-room-client-android.readthedocs.org/en/latest/
 
 Repository structure
 --------------------
