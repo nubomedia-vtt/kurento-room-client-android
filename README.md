@@ -1,4 +1,4 @@
-kurento-room-android
+kurento-room-client-android
 =================
 This repository contains Kurento Room API for Android.
 
