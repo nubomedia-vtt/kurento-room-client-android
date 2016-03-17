@@ -4,6 +4,9 @@ import java.util.Map;
 
 import fi.vtt.nubomedia.jsonrpcwsandroid.JsonRpcNotification;
 
+/**
+ * Room notification class
+ */
 public class RoomNotification {
     private String method = null;
     private Map<String, Object> params = null;
@@ -30,7 +33,6 @@ public class RoomNotification {
         return "RoomNotification: "+method+" - "+paramsToString();
     }
 
-
     private String paramsToString(){
         StringBuffer sb = new StringBuffer();
         if(this.params!=null){
@@ -42,6 +44,4 @@ public class RoomNotification {
             return sb.toString();
         } else return null;
     }
-
-
 }

@@ -78,5 +78,29 @@ Support is provided through the Nubomedia VTT Public Mailing List available at
 https://groups.google.com/forum/#!forum/nubomedia-vtt
 
 
+Adding a trusted self-signed certificate
+========================================
+KurentoRoomAPI supports developers to add a trusted self-signed certificate. This allows testing without CA certificate, and moreover if the application uses only one Kurento server, no CA certificate is needed.
 
+Here is an example on how to include a self-signed certificate from assets in Android Studio:
 
+.. code:: java
+
+    KurentoRoomAPI kurentoRoomAPI;
+    CertificateFactory cf = CertificateFactory.getInstance("X.509");
+    InputStream caInput = new BufferedInputStream(myActivity.context.getAssets().open("my_server_certificate.cer"));
+    Certificate myCert = cf.generateCertificate(caInput);
+    kurentoRoomAPI.addTrustedCertificate("MyServersCertificate", myCert);
+    kurentoRoomAPI.connectWebSocket();
+
+Now the application trusts a server which possesses private key of certificate "my_server_certificate.cer".
+
+WSS support on Android 5.0 (Lollipop) and up
+============================================
+kurento-room-client-android library uses Maven org.java_websocket:
+http://mvnrepository.com/artifact/org.java-websocket/Java-WebSocket/
+
+However, org.java_websocket version 1.3.0 is not compatible with Android 5.0 and newer systems due to malfunction in wss protocol handshake. Until a newer version is uploaded to Maven, a workaround is to compile a newer version from git:
+https://github.com/TooTallNate/Java-WebSocket
+
+This limitation is known to exist only in wss TSL handshake.

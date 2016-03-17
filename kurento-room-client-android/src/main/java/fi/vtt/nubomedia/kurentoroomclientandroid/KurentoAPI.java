@@ -2,8 +2,10 @@ package fi.vtt.nubomedia.kurentoroomclientandroid;
 
 import android.util.Log;
 
-import net.minidev.json.JSONObject;
-
+import org.java_websocket.WebSocketImpl;
+import org.java_websocket.client.DefaultSSLWebSocketClientFactory;
+import org.java_websocket.client.DefaultWebSocketClientFactory;
+import org.java_websocket.client.WebSocketClient.WebSocketClientFactory;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
@@ -17,15 +19,29 @@ import fi.vtt.nubomedia.utilitiesandroid.LooperExecutor;
 
 
 /**
- * Base class for API classes that handles web socket connections and
- * Json-RPC requests and responses.
+ * Base class for API classes that handles web socket connections and Json-RPC requests and
+ * responses.
  */
 public abstract class KurentoAPI implements JsonRpcWebSocketClient.WebSocketConnectionEvents {
     private static final String LOG_TAG = "KurentoAPI";
     protected JsonRpcWebSocketClient client = null;
     protected LooperExecutor executor = null;
     protected String wsUri = null;
+    protected WebSocketClientFactory webSocketClientFactory = null;
 
+    /**
+     * Constructor that initializes required instances and parameters for the API calls.
+     * WebSocket connections are not established in the constructor. User is responsible
+     * for opening, closing and checking if the connection is open through the corresponding
+     * API calls.
+     *
+     * @param executor is the asynchronous UI-safe executor for tasks.
+     * @param uri is the web socket link to the room web services.
+     */
+    public KurentoAPI(LooperExecutor executor, String uri) {
+        this.executor = executor;
+        this.wsUri = uri;
+    }
 
     /**
      * Opens a web socket connection to the predefined URI as provided in the constructor.
@@ -39,12 +55,14 @@ public abstract class KurentoAPI implements JsonRpcWebSocketClient.WebSocketConn
             }
             URI uri = new URI(wsUri);
             client = new JsonRpcWebSocketClient(uri, this,executor);
+            if (webSocketClientFactory != null) {
+                client.setWebSocketFactory(webSocketClientFactory);
+            }
             executor.execute(new Runnable() {
                 public void run() {
                     client.connect();
                 }
             });
-
         } catch (Exception exc){
             Log.e(LOG_TAG, "connectWebSocket", exc);
         }
@@ -81,7 +99,6 @@ public abstract class KurentoAPI implements JsonRpcWebSocketClient.WebSocketConn
             ;
         }
     }
-
 
     /**
      *
@@ -144,7 +161,5 @@ public abstract class KurentoAPI implements JsonRpcWebSocketClient.WebSocketConn
     public void onError(Exception e) {
         Log.e(LOG_TAG, "onError: "+e.getMessage(), e);
     }
-
-
 
 }

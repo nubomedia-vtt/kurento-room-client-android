@@ -1,5 +1,8 @@
 package fi.vtt.nubomedia.kurentoroomclientandroid;
 
+/**
+ * Interface class defining the KurentoRoomAPI room events
+ */
 public interface RoomListener {
 
     /**
@@ -13,11 +16,22 @@ public interface RoomListener {
     public static final String METHOD_SEND_MESSAGE = "sendMessage";
     public static final String METHOD_MEDIA_ERROR = "mediaError";
 
-
+    /**
+     * Room has responded to a message
+     * @param response The response object
+     */
     public void onRoomResponse(RoomResponse response);
 
+    /**
+     * The room has encountered an error
+     * @param error The error object
+     */
     public void onRoomError(RoomError error);
 
+    /**
+     * The room has sent a notification
+     * @param notification The notification object
+     */
     public void onRoomNotification(RoomNotification notification);
 
 

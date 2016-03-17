@@ -4,7 +4,21 @@ import android.util.Log;
 
 import net.minidev.json.JSONObject;
 
+import org.java_websocket.client.DefaultSSLWebSocketClientFactory;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
 import java.util.HashMap;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManagerFactory;
 
 import fi.vtt.nubomedia.jsonrpcwsandroid.JsonRpcNotification;
 import fi.vtt.nubomedia.jsonrpcwsandroid.JsonRpcResponse;
@@ -17,6 +31,7 @@ import fi.vtt.nubomedia.utilitiesandroid.LooperExecutor;
 public class KurentoRoomAPI extends KurentoAPI {
     private static final String LOG_TAG = "KurentoRoomAPI";
     private RoomListener roomListener = null;
+    private KeyStore keyStore;
 
     /**
      * Constructor that initializes required instances and parameters for the API calls.
@@ -29,12 +44,17 @@ public class KurentoRoomAPI extends KurentoAPI {
      * @param listener interface handles the callbacks for responses, notifications and errors.
      */
     public KurentoRoomAPI(LooperExecutor executor, String uri, RoomListener listener){
-        super();
-        this.executor = executor;
-        this.wsUri = uri;
+        super(executor, uri);
         this.roomListener = listener;
-    }
 
+        // Create a KeyStore containing our trusted CAs
+        try {
+            keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            keyStore.load(null, null);
+        } catch (KeyStoreException | CertificateException | NoSuchAlgorithmException | IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Method for the user to join the room. If the room does not exist previously,
@@ -172,6 +192,59 @@ public class KurentoRoomAPI extends KurentoAPI {
 
     }
 
+    /**
+     * This methods can be used to add a self-signed SSL certificate to be trusted when establishing
+     * connection.
+     * @param alias is a unique alias for the certificate
+     * @param cert is the certificate object
+     */
+    public void addTrustedCertificate(String alias, Certificate cert){
+        try {
+            keyStore.setCertificateEntry(alias, cert);
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Opens a web socket connection to the predefined URI as provided in the constructor.
+     * The method responds immediately, whether or not the connection is opened.
+     * The method isWebSocketConnected() should be called to ensure that the connection is open.
+     * Secure socket is created if protocol contained in Uri is either https or wss.
+     */
+    public void connectWebSocket() {
+        if(isWebSocketConnected()){
+            return;
+        }
+
+        // Switch to SSL web socket client factory if secure protocol detected
+        String scheme = null;
+        try {
+            scheme = new URI(wsUri).getScheme();
+            if (scheme.equals("https") || scheme.equals("wss")){
+                // Create a TrustManager that trusts the CAs in our KeyStore
+                String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+                TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
+                tmf.init(keyStore);
+
+                // Create an SSLContext that uses our TrustManager
+                SSLContext sslContext = SSLContext.getInstance("TLS");
+                sslContext.init(null, tmf.getTrustManagers(), null);
+
+                webSocketClientFactory = new DefaultSSLWebSocketClientFactory(sslContext);
+            }
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        }
+        super.connectWebSocket();
+    }
+
     /* WEB SOCKET CONNECTION EVENTS */
 
     /**
@@ -198,6 +271,10 @@ public class KurentoRoomAPI extends KurentoAPI {
         roomListener.onRoomNotification(roomNotification);
     }
 
+    /**
+     * Callback method that relays error messages to the RoomListener interface.
+     * @param e The exception instance
+     */
     @Override
     public void onError(Exception e) {
         Log.e(LOG_TAG, "onError: "+e.getMessage(), e);

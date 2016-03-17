@@ -7,10 +7,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Room response class
+ */
 public class RoomResponse {
     String id = null;
-
-
     String sessionId = null;
     private HashMap<String, String> values = null;
 
@@ -95,7 +96,4 @@ public class RoomResponse {
             return sb.toString();
         } else return null;
     }
-
-
-
 }

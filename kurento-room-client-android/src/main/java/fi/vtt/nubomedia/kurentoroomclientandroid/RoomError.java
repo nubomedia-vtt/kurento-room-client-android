@@ -2,6 +2,9 @@ package fi.vtt.nubomedia.kurentoroomclientandroid;
 
 import fi.vtt.nubomedia.jsonrpcwsandroid.JsonRpcResponseError;
 
+/**
+ * Room error class
+ */
 public class RoomError {
     private String code = null;
     private String data = null;
@@ -27,5 +30,4 @@ public class RoomError {
     public String toString(){
         return "RoomError: "+code+" - "+data;
     }
-
 }
