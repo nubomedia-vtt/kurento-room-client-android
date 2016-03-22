@@ -34,5 +34,14 @@ public interface RoomListener {
      */
     public void onRoomNotification(RoomNotification notification);
 
+    /**
+     * The connection to room is ready.
+     */
+    public void onRoomConnected();
+
+    /**
+     * The connection to room is lost or disconnected.
+     */
+    public void onRoomDisconnected();
 
 }

@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: "com.jfrog.bintray"
 
-version "1.0.6"
+version "1.0.10"
 
 android {
     compileSdkVersion 23
@@ -12,7 +12,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 7
-        versionName "1.0.6"
+        versionName "1.0.10"
     }
     buildTypes {
         release {
@@ -27,7 +27,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
 
-    compile 'fi.vtt.nubomedia:webrtcpeer-android:1.0.0'
     compile 'fi.vtt.nubomedia:jsonrpc-ws-android:1.0.4'
     compile 'fi.vtt.nubomedia:utilities-android:1.0.0'
 }
@@ -61,6 +60,12 @@ install {
                         name 'Jukka Ahola'
                         email 'jukka.ahola@vtt.fi'
                     }
+                    developer {
+                        id 'maenpoika'
+                        name 'Toni Mäki'
+                        email 'toni.maki@vtt.fi'
+                    }
+
                 }
                 scm {
                     connection gitUrl
@@ -106,6 +111,7 @@ bintray {
         // it is the name that appears in bintray when logged
         name = "kurento-room-client-android"
         websiteUrl = siteUrl
+		userOrg = 'nubomedia-vtt'
         vcsUrl = gitUrl
         licenses = ["BSD 3-Clause"]
         publish = true

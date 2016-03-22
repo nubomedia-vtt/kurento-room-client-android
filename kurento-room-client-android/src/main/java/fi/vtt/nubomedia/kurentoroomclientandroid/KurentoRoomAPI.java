@@ -5,6 +5,7 @@ import android.util.Log;
 import net.minidev.json.JSONObject;
 
 import org.java_websocket.client.DefaultSSLWebSocketClientFactory;
+import org.java_websocket.handshake.ServerHandshake;
 
 import java.io.IOException;
 import java.net.URI;
@@ -16,6 +17,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.util.HashMap;
+import java.util.Vector;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
@@ -30,8 +32,8 @@ import fi.vtt.nubomedia.utilitiesandroid.LooperExecutor;
  */
 public class KurentoRoomAPI extends KurentoAPI {
     private static final String LOG_TAG = "KurentoRoomAPI";
-    private RoomListener roomListener = null;
     private KeyStore keyStore;
+    private Vector<RoomListener> listeners;
 
     /**
      * Constructor that initializes required instances and parameters for the API calls.
@@ -45,7 +47,9 @@ public class KurentoRoomAPI extends KurentoAPI {
      */
     public KurentoRoomAPI(LooperExecutor executor, String uri, RoomListener listener){
         super(executor, uri);
-        this.roomListener = listener;
+
+        listeners = new Vector<RoomListener>();
+        listeners.add(listener);
 
         // Create a KeyStore containing our trusted CAs
         try {
@@ -247,6 +251,28 @@ public class KurentoRoomAPI extends KurentoAPI {
 
     /* WEB SOCKET CONNECTION EVENTS */
 
+    @Override
+    public void onOpen(ServerHandshake handshakedata) {
+        super.onOpen(handshakedata);
+
+        synchronized (listeners) {
+            for (RoomListener rl : listeners) {
+                rl.onRoomConnected();
+            }
+        }
+    }
+
+    @Override
+    public void onClose(int code, String reason, boolean remote) {
+        super.onClose(code, reason, remote);
+
+        synchronized (listeners) {
+            for (RoomListener rl : listeners) {
+                rl.onRoomDisconnected();
+            }
+        }
+    }
+
     /**
      * Callback method that relays the RoomResponse or RoomError to the RoomListener interface.
      */
@@ -255,10 +281,20 @@ public class KurentoRoomAPI extends KurentoAPI {
         if(response.isSuccessful()){
             JSONObject jsonObject = (JSONObject)response.getResult();
             RoomResponse roomResponse = new RoomResponse(response.getId().toString(), jsonObject);
-            roomListener.onRoomResponse(roomResponse);
+
+            synchronized (listeners) {
+                for (RoomListener rl : listeners) {
+                    rl.onRoomResponse(roomResponse);
+                }
+            }
         } else {
             RoomError roomError = new RoomError(response.getError());
-            roomListener.onRoomError(roomError);
+
+            synchronized (listeners) {
+                for (RoomListener rl : listeners) {
+                    rl.onRoomError(roomError);
+                }
+            }
         }
     }
 
@@ -268,7 +304,24 @@ public class KurentoRoomAPI extends KurentoAPI {
     @Override
     public void onNotification(JsonRpcNotification notification) {
         RoomNotification roomNotification = new RoomNotification(notification);
-        roomListener.onRoomNotification(roomNotification);
+
+        synchronized (listeners) {
+            for (RoomListener rl : listeners) {
+                rl.onRoomNotification(roomNotification);
+            }
+        }
+    }
+
+    public void addObserver(RoomListener listener){
+        synchronized (listeners) {
+            listeners.add(listener);
+        }
+    }
+
+    public void removeObserver(RoomListener listener){
+        synchronized (listeners) {
+            listeners.remove(listener);
+        }
     }
 
     /**
