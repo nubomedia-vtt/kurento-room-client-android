@@ -33,6 +33,7 @@ import fi.vtt.nubomedia.utilitiesandroid.LooperExecutor;
 public class KurentoRoomAPI extends KurentoAPI {
     private static final String LOG_TAG = "KurentoRoomAPI";
     private KeyStore keyStore;
+    private boolean usingSelfSigned = false;
     private Vector<RoomListener> listeners;
 
     /**
@@ -211,6 +212,16 @@ public class KurentoRoomAPI extends KurentoAPI {
     }
 
     /**
+     * Switches on/off the self-signed certificate support.
+     *
+     * @see KurentoRoomAPI#addTrustedCertificate(String, Certificate)
+     * @param use
+     */
+    public void useSelfSignedCertificate(boolean use){
+        this.usingSelfSigned = use;
+    }
+
+    /**
      * Opens a web socket connection to the predefined URI as provided in the constructor.
      * The method responds immediately, whether or not the connection is opened.
      * The method isWebSocketConnected() should be called to ensure that the connection is open.
@@ -226,15 +237,19 @@ public class KurentoRoomAPI extends KurentoAPI {
         try {
             scheme = new URI(wsUri).getScheme();
             if (scheme.equals("https") || scheme.equals("wss")){
-                // Create a TrustManager that trusts the CAs in our KeyStore
-                String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
-                TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
-                tmf.init(keyStore);
 
-                // Create an SSLContext that uses our TrustManager
+                // Create an SSLContext that uses our or default TrustManager
                 SSLContext sslContext = SSLContext.getInstance("TLS");
-                sslContext.init(null, tmf.getTrustManagers(), null);
 
+                if (usingSelfSigned) {
+                    // Create a TrustManager that trusts the CAs in our KeyStore
+                    String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+                    TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
+                    tmf.init(keyStore);
+                    sslContext.init(null, tmf.getTrustManagers(), null);
+                } else {
+                    sslContext.init(null, null, null);
+                }
                 webSocketClientFactory = new DefaultSSLWebSocketClientFactory(sslContext);
             }
         } catch (URISyntaxException e) {
