@@ -4,8 +4,10 @@ import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Vector;
 
 /**
  * Room response class
@@ -13,7 +15,7 @@ import java.util.Set;
 public class RoomResponse {
     String id = null;
     String sessionId = null;
-    private HashMap<String, String> values = null;
+    private List<HashMap<String, String>> values = null;
 
     public RoomResponse(String id, JSONObject obj){
         super();
@@ -22,15 +24,22 @@ public class RoomResponse {
         this.values = this.getJSONObjectValues(obj);
     }
 
-    public HashMap<String, String> getValues() {
+    public List<HashMap<String, String>> getValues() {
         return values;
     }
 
-    public String getValue(String key){
-        return values.get(key);
+    public List<String> getValue(String key){
+
+        List<String> result = new Vector<>();
+
+        for (HashMap<String, String> aMap : values) {
+            result.add(aMap.get(key));
+        }
+
+        return result;
     }
 
-    public void setValues(HashMap<String, String> values) {
+    public void setValues(List<HashMap<String, String>> values) {
         this.values = values;
     }
 
@@ -62,21 +71,28 @@ public class RoomResponse {
         }
     }
 
-    private HashMap<String, String> getJSONObjectValues(JSONObject obj){
-        HashMap<String, String> result = new HashMap<String, String>();
+    private List<HashMap<String, String>> getJSONObjectValues(JSONObject obj){
+        List<HashMap<String, String>> result = new Vector<>();
+
         if(obj.containsKey("value")) {
             JSONArray value = (JSONArray)obj.get("value");
             for(int i=0;i<value.size();i++) {
+                HashMap<String, String> vArrayElement = new HashMap<String, String>();
+
                 JSONObject jo = (JSONObject) value.get(i);
                 Set<String> keys = jo.keySet();
                 for(String key : keys){
-                    result.put(key, jo.get(key).toString());
+                    vArrayElement.put(key, jo.get(key).toString());
                 }
+                result.add(vArrayElement);
             }
         }
         if (obj.containsKey("sdpAnswer")){
             String sd = (String)obj.get("sdpAnswer");
-            result.put("sdpAnswer", sd);
+            HashMap<String, String> vArrayElement = new HashMap<String, String>();
+
+            vArrayElement.put("sdpAnswer", sd);
+            result.add(vArrayElement);
         }
         if (result.isEmpty()){
             result = null;
@@ -88,10 +104,14 @@ public class RoomResponse {
     private String valuesToString(){
         StringBuffer sb = new StringBuffer();
         if(this.values!=null){
-            for (Map.Entry<String,String> entry : values.entrySet()) {
-                String key = entry.getKey();
-                String value = entry.getValue();
-                sb.append(key+"="+value+", ");
+            for (HashMap<String, String> aValueMap : values ) {
+                sb.append("{");
+                for (Map.Entry<String, String> entry : aValueMap.entrySet()) {
+                    String key = entry.getKey();
+                    String value = entry.getValue();
+                    sb.append(key + "=" + value + ", ");
+                }
+                sb.append("},");
             }
             return sb.toString();
         } else return null;
