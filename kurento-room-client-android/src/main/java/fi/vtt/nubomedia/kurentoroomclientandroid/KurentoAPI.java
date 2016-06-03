@@ -1,10 +1,6 @@
 package fi.vtt.nubomedia.kurentoroomclientandroid;
 
 import android.util.Log;
-
-import org.java_websocket.WebSocketImpl;
-import org.java_websocket.client.DefaultSSLWebSocketClientFactory;
-import org.java_websocket.client.DefaultWebSocketClientFactory;
 import org.java_websocket.client.WebSocketClient.WebSocketClientFactory;
 import org.java_websocket.handshake.ServerHandshake;
 
