@@ -43,5 +43,4 @@ public interface RoomListener {
      * The connection to room is lost or disconnected.
      */
     public void onRoomDisconnected();
-
 }

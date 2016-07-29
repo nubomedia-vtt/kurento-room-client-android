@@ -71,10 +71,11 @@ public class KurentoRoomAPI extends KurentoAPI {
      * @param roomId is the name of the room to be joined.
      * @param id is an index number to track the corresponding response message to this request.
      */
-    public void sendJoinRoom(String userId, String roomId, int id){
+    public void sendJoinRoom(String userId, String roomId, boolean dataChannelsEnabled, int id){
         HashMap<String, Object> namedParameters = new HashMap<String, Object>();
         namedParameters.put("user", userId);
         namedParameters.put("room", roomId);
+        namedParameters.put("dataChannels", dataChannelsEnabled);
         send("joinRoom", namedParameters, id);
     }
 
