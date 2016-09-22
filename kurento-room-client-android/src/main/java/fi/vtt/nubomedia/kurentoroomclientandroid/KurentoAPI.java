@@ -3,10 +3,8 @@ package fi.vtt.nubomedia.kurentoroomclientandroid;
 import android.util.Log;
 import org.java_websocket.client.WebSocketClient.WebSocketClientFactory;
 import org.java_websocket.handshake.ServerHandshake;
-
 import java.net.URI;
 import java.util.HashMap;
-
 import fi.vtt.nubomedia.jsonrpcwsandroid.JsonRpcNotification;
 import fi.vtt.nubomedia.jsonrpcwsandroid.JsonRpcRequest;
 import fi.vtt.nubomedia.jsonrpcwsandroid.JsonRpcResponse;

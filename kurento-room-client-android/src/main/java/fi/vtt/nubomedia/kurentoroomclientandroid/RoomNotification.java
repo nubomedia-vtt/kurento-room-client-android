@@ -1,7 +1,6 @@
 package fi.vtt.nubomedia.kurentoroomclientandroid;
 
 import java.util.Map;
-
 import fi.vtt.nubomedia.jsonrpcwsandroid.JsonRpcNotification;
 
 /**

@@ -6,7 +6,6 @@ import net.minidev.json.JSONObject;
 
 import org.java_websocket.client.DefaultSSLWebSocketClientFactory;
 import org.java_websocket.handshake.ServerHandshake;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -18,10 +17,8 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.util.HashMap;
 import java.util.Vector;
-
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
-
 import fi.vtt.nubomedia.jsonrpcwsandroid.JsonRpcNotification;
 import fi.vtt.nubomedia.jsonrpcwsandroid.JsonRpcResponse;
 import fi.vtt.nubomedia.utilitiesandroid.LooperExecutor;
@@ -49,7 +46,7 @@ public class KurentoRoomAPI extends KurentoAPI {
     public KurentoRoomAPI(LooperExecutor executor, String uri, RoomListener listener){
         super(executor, uri);
 
-        listeners = new Vector<RoomListener>();
+        listeners = new Vector<>();
         listeners.add(listener);
 
         // Create a KeyStore containing our trusted CAs
@@ -71,8 +68,9 @@ public class KurentoRoomAPI extends KurentoAPI {
      * @param roomId is the name of the room to be joined.
      * @param id is an index number to track the corresponding response message to this request.
      */
+    @SuppressWarnings("unused")
     public void sendJoinRoom(String userId, String roomId, boolean dataChannelsEnabled, int id){
-        HashMap<String, Object> namedParameters = new HashMap<String, Object>();
+        HashMap<String, Object> namedParameters = new HashMap<>();
         namedParameters.put("user", userId);
         namedParameters.put("room", roomId);
         namedParameters.put("dataChannels", dataChannelsEnabled);
@@ -84,6 +82,7 @@ public class KurentoRoomAPI extends KurentoAPI {
      *
      * @param id is an index number to track the corresponding response message to this request.
      */
+    @SuppressWarnings("unused")
     public void sendLeaveRoom(int id){
         send("leaveRoom", null, id);
     }
@@ -95,10 +94,11 @@ public class KurentoRoomAPI extends KurentoAPI {
      * @param doLoopback is a boolean value enabling media loopback
      * @param id is an index number to track the corresponding response message to this request.
      */
+    @SuppressWarnings("unused")
     public void sendPublishVideo(String sdpOffer, boolean doLoopback, int id){
-        HashMap<String, Object> namedParameters = new HashMap<String, Object>();
+        HashMap<String, Object> namedParameters = new HashMap<>();
         namedParameters.put("sdpOffer", sdpOffer);
-        namedParameters.put("doLoopback", new Boolean(doLoopback));
+        namedParameters.put("doLoopback", doLoopback);
         send("publishVideo", namedParameters, id);
     }
 
@@ -107,6 +107,7 @@ public class KurentoRoomAPI extends KurentoAPI {
      *
      * @param id is an index number to track the corresponding response message to this request.
      */
+    @SuppressWarnings("unused")
     public void sendUnpublishVideo(int id){
         send("unpublishVideo", null, id);
     }
@@ -120,8 +121,9 @@ public class KurentoRoomAPI extends KurentoAPI {
      * @param sdpOffer is the SDP offer sent by this client.
      * @param id is an index number to track the corresponding response message to this request.
      */
+    @SuppressWarnings("unused")
     public void sendReceiveVideoFrom(String sender, String sdpOffer, int id){
-        HashMap<String, Object> namedParameters = new HashMap<String, Object>();
+        HashMap<String, Object> namedParameters = new HashMap<>();
         namedParameters.put("sdpOffer", sdpOffer);
         namedParameters.put("sender", sender);
         send("receiveVideoFrom", namedParameters, id);
@@ -135,9 +137,10 @@ public class KurentoRoomAPI extends KurentoAPI {
      * @param streamId is the name of the stream (typically webcam)
      * @param id is an index number to track the corresponding response message to this request.
      */
+    @SuppressWarnings("unused")
     public void sendUnsubscribeFromVideo(String userId, String streamId, int id){
         String sender = userId+"_"+streamId;
-        HashMap<String, Object> namedParameters = new HashMap<String, Object>();
+        HashMap<String, Object> namedParameters = new HashMap<>();
         namedParameters.put("sender", sender);
         send("unsubscribeFromVideo", namedParameters, id);
     }
@@ -153,8 +156,9 @@ public class KurentoRoomAPI extends KurentoAPI {
      * @param sdpMLineIndex is the index (starting at 0) of the m-line in the SDP,
      *                      this candidate is associated with.
      */
+    @SuppressWarnings("unused")
     public void sendOnIceCandidate(String endpointName, String candidate, String sdpMid, String sdpMLineIndex, int id){
-        HashMap<String, Object> namedParameters = new HashMap<String, Object>();
+        HashMap<String, Object> namedParameters = new HashMap<>();
         namedParameters.put("endpointName", endpointName);
         namedParameters.put("candidate", candidate);
         namedParameters.put("sdpMid", sdpMid);
@@ -170,8 +174,9 @@ public class KurentoRoomAPI extends KurentoAPI {
      * @param message is the text message sent to the room.
      * @param id is an index number to track the corresponding response message to this request.
      */
+    @SuppressWarnings("unused")
     public void sendMessage(String roomId, String userId, String message, int id){
-        HashMap<String, Object> namedParameters = new HashMap<String, Object>();
+        HashMap<String, Object> namedParameters = new HashMap<>();
         namedParameters.put("message", message);
         namedParameters.put("userMessage", userId);
         namedParameters.put("roomMessage", roomId);
@@ -186,11 +191,12 @@ public class KurentoRoomAPI extends KurentoAPI {
      *               the applicable name value in the names array.
      * @param id is an index number to track the corresponding response message to this request.
      */
+    @SuppressWarnings("unused")
     public void sendCustomRequest(String[] names, String[] values, int id){
         if(names==null || values==null||names.length!=values.length){
             return;  // mismatching name-value pairs
         }
-        HashMap<String, Object> namedParameters = new HashMap<String, Object>();
+        HashMap<String, Object> namedParameters = new HashMap<>();
         for(int i=0;i<names.length;i++) {
             namedParameters.put(names[i], values[i]);
         }
@@ -204,6 +210,7 @@ public class KurentoRoomAPI extends KurentoAPI {
      * @param alias is a unique alias for the certificate
      * @param cert is the certificate object
      */
+    @SuppressWarnings("unused")
     public void addTrustedCertificate(String alias, Certificate cert){
         try {
             keyStore.setCertificateEntry(alias, cert);
@@ -216,8 +223,9 @@ public class KurentoRoomAPI extends KurentoAPI {
      * Switches on/off the self-signed certificate support.
      *
      * @see KurentoRoomAPI#addTrustedCertificate(String, Certificate)
-     * @param use
+     * @param use Boolean which indicates whether to use self-signed certificates
      */
+    @SuppressWarnings("unused")
     public void useSelfSignedCertificate(boolean use){
         this.usingSelfSigned = use;
     }
@@ -234,7 +242,7 @@ public class KurentoRoomAPI extends KurentoAPI {
         }
 
         // Switch to SSL web socket client factory if secure protocol detected
-        String scheme = null;
+        String scheme;
         try {
             scheme = new URI(wsUri).getScheme();
             if (scheme.equals("https") || scheme.equals("wss")){
@@ -253,13 +261,7 @@ public class KurentoRoomAPI extends KurentoAPI {
                 }
                 webSocketClientFactory = new DefaultSSLWebSocketClientFactory(sslContext);
             }
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (KeyStoreException e) {
-            e.printStackTrace();
-        } catch (KeyManagementException e) {
+        } catch (URISyntaxException|NoSuchAlgorithmException|KeyStoreException|KeyManagementException e) {
             e.printStackTrace();
         }
         super.connectWebSocket();
@@ -328,12 +330,14 @@ public class KurentoRoomAPI extends KurentoAPI {
         }
     }
 
+    @SuppressWarnings("unused")
     public void addObserver(RoomListener listener){
         synchronized (listeners) {
             listeners.add(listener);
         }
     }
 
+    @SuppressWarnings("unused")
     public void removeObserver(RoomListener listener){
         synchronized (listeners) {
             listeners.remove(listener);
