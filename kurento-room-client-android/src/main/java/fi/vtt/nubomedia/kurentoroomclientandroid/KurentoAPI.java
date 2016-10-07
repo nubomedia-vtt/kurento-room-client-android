@@ -109,7 +109,7 @@ public abstract class KurentoAPI implements JsonRpcWebSocketClient.WebSocketConn
                 request.setNamedParams(namedParameters);
             }
             if(id>=0) {
-                request.setId(new Integer(id));
+                request.setId(id);
             }
             executor.execute(new Runnable() {
                 public void run() {

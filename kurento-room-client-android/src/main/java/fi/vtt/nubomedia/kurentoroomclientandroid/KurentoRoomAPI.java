@@ -66,6 +66,7 @@ public class KurentoRoomAPI extends KurentoAPI {
      *
      * @param userId is the username as it appears to all other users.
      * @param roomId is the name of the room to be joined.
+     * @param dataChannelsEnabled True if data channels should be enabled for this user
      * @param id is an index number to track the corresponding response message to this request.
      */
     @SuppressWarnings("unused")
@@ -240,7 +241,6 @@ public class KurentoRoomAPI extends KurentoAPI {
         if(isWebSocketConnected()){
             return;
         }
-
         // Switch to SSL web socket client factory if secure protocol detected
         String scheme;
         try {
