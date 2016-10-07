@@ -28,10 +28,6 @@ public class RoomResponse {
         return values;
     }
 
-    public JSONObject getJsonObject() {
-        return this.jsonObject;
-    }
-
     public List<String> getValue(String key){
 
         List<String> result = new Vector<>();
