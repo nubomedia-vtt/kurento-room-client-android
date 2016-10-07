@@ -13,19 +13,23 @@ import java.util.Vector;
  * Room response class
  */
 public class RoomResponse {
-    String id = null;
-    String sessionId = null;
+    private int id = 0;
+    private String sessionId = null;
     private List<HashMap<String, String>> values = null;
 
     public RoomResponse(String id, JSONObject obj){
         super();
-        this.id = id;
+        this.id = Integer.valueOf(id);
         this.sessionId = this.getJSONObjectSessionId(obj);
         this.values = this.getJSONObjectValues(obj);
     }
 
     public List<HashMap<String, String>> getValues() {
         return values;
+    }
+
+    public JSONObject getJsonObject() {
+        return this.jsonObject;
     }
 
     public List<String> getValue(String key){
@@ -43,11 +47,11 @@ public class RoomResponse {
         this.values = values;
     }
 
-    public String getId() {
+    public int getId() {
         return this.id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
