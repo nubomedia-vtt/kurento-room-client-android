@@ -28,6 +28,9 @@ import fi.vtt.nubomedia.utilitiesandroid.LooperExecutor;
  * responses and notifications to a RoomListener interface.
  */
 public class KurentoRoomAPI extends KurentoAPI {
+
+    public enum Method {JOIN_ROOM, PUBLISH_VIDEO, UNPUBLISH_VIDEO, RECEIVE_VIDEO, STOP_RECEIVE_VIDEO}
+
     private static final String LOG_TAG = "KurentoRoomAPI";
     private KeyStore keyStore;
     private boolean usingSelfSigned = false;
