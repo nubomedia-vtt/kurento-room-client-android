@@ -123,10 +123,10 @@ public class KurentoRoomAPI extends KurentoAPI {
      * @param id is an index number to track the corresponding response message to this request.
      */
     @SuppressWarnings("unused")
-    public void sendReceiveVideoFrom(String sender, String sdpOffer, int id){
+    public void sendReceiveVideoFrom(String sender, String streamId, String sdpOffer, int id){
         HashMap<String, Object> namedParameters = new HashMap<>();
         namedParameters.put("sdpOffer", sdpOffer);
-        namedParameters.put("sender", sender);
+        namedParameters.put("sender", sender + "_" + streamId);
         send("receiveVideoFrom", namedParameters, id);
     }
 
