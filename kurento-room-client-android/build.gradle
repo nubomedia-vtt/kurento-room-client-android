@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: "com.jfrog.bintray"
 
-version "1.1.0"
+version "1.1.1"
 
 android {
     compileSdkVersion 24
@@ -11,8 +11,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 24
-        versionCode 8
-        versionName "1.1.0"
+        versionCode 9
+        versionName "1.1.1"
     }
     buildTypes {
         release {
@@ -37,17 +37,13 @@ install {
         pom {
             project {
                 packaging 'aar'
-
-                // Add your description here
                 name 'kurento-room-client-android'
                 description = 'Android library for making kurento Room API calls'
                 url siteUrl
-
-                // Set your license
                 licenses {
                     license {
-                        name 'The Apache License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0'
+                        name 'Apache License 2.0'
+                        url 'https://www.apache.org/licenses/LICENSE-2.0.txt'
                     }
                 }
                 developers {

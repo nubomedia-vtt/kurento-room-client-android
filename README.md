@@ -1,3 +1,9 @@
+[![License badge](https://img.shields.io/badge/license-Apache2-orange.svg)](https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+[![][NUBOMEDIA Logo]][NUBOMEDIA]
+
+Copyright © 2016 [VTT]. Licensed under [Apache 2.0 License].
+
 kurento-room-client-android
 ===========================
 
@@ -34,7 +40,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-  http://www.apache.org/licenses/LICENSE-2.0
+  [Apache 2.0 License]
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -70,6 +76,9 @@ Support
 Support is provided through the [Nubomedia Public Mailing List]
 
 [NUBOMEDIA]: http://www.nubomedia.eu
+[VTT]: http://www.vtt.fi
+[NUBOMEDIA Logo]: http://www.nubomedia.eu/sites/default/files/nubomedia_logo-small.png
+[Apache 2.0 License]: https://www.apache.org/licenses/LICENSE-2.0.txt
 [Github]: https://github.com/nubomedia-vtt/kurento-room-client-android
 [Nubomedia Public Mailing List]: https://groups.google.com/forum/#!forum/nubomedia-dev
 [project documentation page]: http://kurento-room-client-android.readthedocs.org/en/latest/
