@@ -9,7 +9,18 @@ kurento-room-client-android
 
 This repository contains Kurento Room API for Android.
 
-This project is part of [NUBOMEDIA].
+What is NUBOMEDIA
+-----------------
+This project is part of [NUBOMEDIA], which is an open source cloud Platform as a
+Service (PaaS) which makes possible to integrate Real Time Communications (RTC)
+and multimedia through advanced media processing capabilities. The aim of
+NUBOMEDIA is to democratize multimedia technologies helping all developers to
+include advanced multimedia capabilities into their Web and smartphone
+applications in a simple, direct and fast manner. To accomplish that objective,
+NUBOMEDIA provides a set of APIs that try to abstract all the low level details
+of service deployment, management, and exploitation allowing applications to
+transparently scale and adapt to the required load while preserving QoS
+guarantees.
 
 Repository structure
 --------------------
