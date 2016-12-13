@@ -36,6 +36,8 @@ import java.util.HashMap;
 import java.util.Vector;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
+
 import fi.vtt.nubomedia.jsonrpcwsandroid.JsonRpcNotification;
 import fi.vtt.nubomedia.jsonrpcwsandroid.JsonRpcResponse;
 import fi.vtt.nubomedia.utilitiesandroid.LooperExecutor;
@@ -277,7 +279,23 @@ public class KurentoRoomAPI extends KurentoAPI {
                     tmf.init(keyStore);
                     sslContext.init(null, tmf.getTrustManagers(), null);
                 } else {
-                    sslContext.init(null, null, null);
+                    //Allow all certificates
+                    sslContext.init(null, new X509TrustManager[] {
+                            new X509TrustManager() {
+                                @Override
+                                public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
+                                }
+
+                                @Override
+                                public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
+                                }
+
+                                @Override
+                                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                                    return new java.security.cert.X509Certificate[0];
+                                }
+                            }
+                    }, null);
                 }
                 webSocketClientFactory = new DefaultSSLWebSocketClientFactory(sslContext);
             }
